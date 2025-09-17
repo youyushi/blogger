@@ -1,0 +1,45 @@
+
+# DISABLED: 📱 Google Drive → Notion/Obsidian 자동 동기화
+# sync_script.py 파일이 없어서 임시 비활성화
+
+name: 📱 Google Drive → Notion/Obsidian 자동 동기화 (비활성화됨)
+
+on:
+  # schedule:
+  #   # 10분마다 실행
+  #   - cron: '*/10 * * * *'
+  workflow_dispatch: # 수동 실행만 허용
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install google-api-python-client
+        pip install requests
+        pip install python-dateutil
+    
+    - name: Google Drive 변경 감지
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      run: |
+        python sync_script.py
+    
+    - name: Obsidian 파일 업데이트
+      run: |
+        git config --global user.name "Auto Sync Bot"
+        git config --global user.email "sync@example.com"
+        git add .
+        git commit -m "🔄 Google Drive 자동 동기화: $(date)"
+        git push
