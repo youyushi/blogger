@@ -1,4 +1,4 @@
-GitHub Actions 增强型博客自动化系统 v2.0（韩译中+核心解析）
+#GitHub Actions 增强型博客自动化系统 v2.0（韩译中+核心解析）
  
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
