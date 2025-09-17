@@ -1,0 +1,43 @@
+name: Get Blogger Access Token
+
+on:
+  workflow_dispatch:  # 允许手动触发工作流程
+
+jobs:
+  get-token:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get Access Token
+        id: get_access_token
+        run: |
+          # 使用 Client ID, Client Secret, Refresh Token 从 Google 获取 Access Token
+          TOKEN_RESPONSE=$(curl -X POST \
+            -d "client_id=${{ secrets.GOOGLE_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.GOOGLE_CLIENT_SECRET }}" \
+            -d "refresh_token=${{ secrets.BLOGGER_REFRESH_TOKEN }}" \
+            -d "grant_type=refresh_token" \
+            https://oauth2.googleapis.googleapis.com/token)
+
+          # 从 JSON 响应中提取 Access Token
+          ACCESS_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r .access_token)
+
+          # 将 Access Token 设置为环境变量，以便后续步骤使用
+          echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+
+          # (可选) 打印 Access Token (仅用于调试，生产环境不建议)
+          echo "Access Token: $ACCESS_TOKEN"
+
+      - name: Use Access Token (Example)
+        run: |
+          # 使用 Access Token 调用 Blogger API (示例)
+          curl -H "Authorization: Bearer $ACCESS_TOKEN" \
+            https://blogger.googleapis.com/v3/blogs/${{ secrets.BLOGGER_BLOG_ID }}
+
+          #  你可以将你的其他 Blogger API 调用放在这里，使用 $ACCESS_TOKEN 环境变量
+          #  例如：
+          #  curl -H "Authorization: Bearer $ACCESS_TOKEN" \
+          #    https://blogger.googleapis.com/v3/blogs/${{ secrets.BLOGGER_BLOG_ID }}/posts
