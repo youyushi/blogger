@@ -1,0 +1,107 @@
+name: Blogger OAuth Token Automation
+on:
+  workflow_dispatch:  # 手动触发（推荐，避免自动触发导致授权失败）
+  # schedule:  # 可选：定时刷新 Token（如每月1次，需提前配置 refresh token 复用逻辑）
+  #   - cron: "0 0 1 * *"
+
+jobs:
+  get-blogger-token:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 安装 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"  # 匹配脚本兼容的 Python 版本
+
+      # 3. 安装依赖（脚本需 requests、fastapi、uvicorn、python-dotenv、selenium 等）
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests fastapi uvicorn python-dotenv selenium webdriver-manager
+
+      # 4. 配置 .env 文件（从 Secrets 读取变量）
+      - name: Create .env file
+        run: |
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "BLOGGER_SCOPES=${{ secrets.BLOGGER_SCOPES }}" >> .env
+          echo "REDIRECT_URI=${{ secrets.REDIRECT_URI }}" >> .env
+
+      # 5. 启动 FastAPI 服务（后台运行）
+      - name: Start FastAPI OAuth Server
+        run: |
+          nohup uvicorn blogger_token:app --host 0.0.0.0 --port 8000 &
+          sleep 10  # 等待服务启动（避免端口未就绪）
+
+      # 6. 用无头浏览器模拟授权流程（关键步骤）
+      - name: Simulate OAuth Flow with Headless Browser
+        run: |
+          python - << EOF
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+          import time
+          import requests
+
+          # 配置无头 Chrome
+          chrome_options = Options()
+          chrome_options.add_argument("--headless=new")  # 无头模式
+          chrome_options.add_argument("--no-sandbox")
+          chrome_options.add_argument("--disable-dev-shm-usage")
+
+          # 启动浏览器并访问授权页面
+          driver = webdriver.Chrome(options=chrome_options)
+          driver.get("http://localhost:8000")  # 访问 FastAPI 首页，触发 OAuth 跳转
+
+          try:
+              # 1. 输入 Google 账号（替换为你的授权账号，建议用 GitHub Secrets 存储）
+              email_input = WebDriverWait(driver, 30).until(
+                  EC.presence_of_element_located((By.ID, "identifierId"))
+              )
+              email_input.send_keys("${{ secrets.GOOGLE_AUTH_EMAIL }}")  # 新增 Secret：Google 授权邮箱
+              driver.find_element(By.ID, "identifierNext").click()
+              time.sleep(5)
+
+              # 2. 输入 Google 密码（替换为你的密码，建议用 GitHub Secrets 存储）
+              password_input = WebDriverWait(driver, 30).until(
+                  EC.presence_of_element_located((By.NAME, "Passwd"))
+              )
+              password_input.send_keys("${{ secrets.GOOGLE_AUTH_PASSWORD }}")  # 新增 Secret：Google 授权密码
+              driver.find_element(By.ID, "passwordNext").click()
+              time.sleep(10)
+
+              # 3. 确认授权（若首次授权，需点击"允许"）
+              try:
+                  allow_btn = WebDriverWait(driver, 20).until(
+                      EC.presence_of_element_located((By.XPATH, "//button[contains(text(), '允许')]"))
+                  )
+                  allow_btn.click()
+                  time.sleep(5)
+              except:
+                  print("无需二次授权（已授权过）")
+
+              # 4. 验证 Token 文件是否生成
+              token_check = requests.get("http://localhost:8000/get_token")
+              if token_check.status_code == 200:
+                  print("✅ Token 获取成功！")
+                  print("Token 详情：", token_check.json())
+              else:
+                  raise Exception("❌ Token 获取失败，状态码：", token_check.status_code)
+
+          finally:
+              driver.quit()  # 关闭浏览器
+          EOF
+
+      # 7. 上传 Token 文件到 Artifacts（便于下载使用）
+      - name: Upload Token File
+        uses: actions/upload-artifact@v4
+        with:
+          name: blogger-token
+          path: blogger_token.json  # 脚本生成的 Token 文件
