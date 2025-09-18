@@ -1,30 +1,25 @@
 name: Blogger OAuth Token Automation
 on:
-  workflow_dispatch:  # 手动触发（推荐，避免自动触发导致授权失败）
-  # schedule:  # 可选：定时刷新 Token（如每月1次，需提前配置 refresh token 复用逻辑）
-  #   - cron: "0 0 1 * *"
+  workflow_dispatch:
 
 jobs:
   get-blogger-token:
     runs-on: ubuntu-latest
     steps:
-      # 1. 检出代码
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. 安装 Python 环境
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"  # 匹配脚本兼容的 Python 版本
+          python-version: "3.10"
 
-      # 3. 安装依赖（脚本需 requests、fastapi、uvicorn、python-dotenv、selenium 等）
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # 确保安装所有依赖（含 webdriver-manager）
           pip install requests fastapi uvicorn python-dotenv selenium webdriver-manager
 
-      # 4. 配置 .env 文件（从 Secrets 读取变量）
       - name: Create .env file
         run: |
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
@@ -32,14 +27,14 @@ jobs:
           echo "BLOGGER_SCOPES=${{ secrets.BLOGGER_SCOPES }}" >> .env
           echo "REDIRECT_URI=${{ secrets.REDIRECT_URI }}" >> .env
 
-      # 5. 启动 FastAPI 服务（后台运行）
       - name: Start FastAPI OAuth Server
         run: |
           nohup uvicorn blogger_token:app --host 0.0.0.0 --port 8000 &
-          sleep 10  # 等待服务启动（避免端口未就绪）
+          sleep 15  # 延长等待时间，确保服务完全启动
+          # 验证服务是否存活（新增）
+          curl --fail --connect-timeout 5 http://localhost:8000 || (echo "服务启动失败" && exit 1)
 
-      # 6. 用无头浏览器模拟授权流程（关键步骤）
-      - name: Simulate OAuth Flow with Headless Browser
+      - name: Simulate OAuth Flow with Headless Browser（修复版）
         run: |
           python - << EOF
           from selenium import webdriver
@@ -47,61 +42,91 @@ jobs:
           from selenium.webdriver.common.by import By
           from selenium.webdriver.support.ui import WebDriverWait
           from selenium.webdriver.support import expected_conditions as EC
+          # 关键：自动安装并管理 Chrome 驱动（原脚本缺失）
+          from webdriver_manager.chrome import ChromeDriverManager
           import time
           import requests
 
-          # 配置无头 Chrome
+          # 优化 Chrome 配置（适配 GitHub Actions 环境）
           chrome_options = Options()
-          chrome_options.add_argument("--headless=new")  # 无头模式
+          chrome_options.add_argument("--headless=new")
           chrome_options.add_argument("--no-sandbox")
           chrome_options.add_argument("--disable-dev-shm-usage")
+          chrome_options.add_argument("--window-size=1920,1080")  # 设置窗口大小，避免元素不可见
+          chrome_options.add_argument("--disable-gpu")  # 禁用 GPU，减少资源占用
 
-          # 启动浏览器并访问授权页面
-          driver = webdriver.Chrome(options=chrome_options)
-          driver.get("http://localhost:8000")  # 访问 FastAPI 首页，触发 OAuth 跳转
+          # 自动安装驱动并启动 Chrome（核心修复）
+          driver = webdriver.Chrome(
+              executable_path=ChromeDriverManager().install(),
+              options=chrome_options
+          )
+          driver.get("http://localhost:8000")
+          print("已访问 FastAPI 首页，开始跳转 Google 登录页...")
+          time.sleep(5)  # 等待跳转完成
 
           try:
-              # 1. 输入 Google 账号（替换为你的授权账号，建议用 GitHub Secrets 存储）
-              email_input = WebDriverWait(driver, 30).until(
-                  EC.presence_of_element_located((By.ID, "identifierId"))
+              # 1. 定位并输入 Google 邮箱（优化定位方式，适配多语言）
+              print("正在输入 Google 邮箱...")
+              email_input = WebDriverWait(driver, 40).until(  # 延长超时时间到 40s
+                  EC.element_to_be_clickable((By.XPATH, "//input[@type='email']"))  # 用 type 定位，更稳定
               )
-              email_input.send_keys("${{ secrets.GOOGLE_AUTH_EMAIL }}")  # 新增 Secret：Google 授权邮箱
-              driver.find_element(By.ID, "identifierNext").click()
-              time.sleep(5)
-
-              # 2. 输入 Google 密码（替换为你的密码，建议用 GitHub Secrets 存储）
-              password_input = WebDriverWait(driver, 30).until(
-                  EC.presence_of_element_located((By.NAME, "Passwd"))
+              email_input.clear()
+              email_input.send_keys("${{ secrets.GOOGLE_AUTH_EMAIL }}")
+              # 点击“下一步”（用 XPath 定位，避免依赖 ID 变化）
+              next_btn = WebDriverWait(driver, 20).until(
+                  EC.element_to_be_clickable((By.XPATH, "//span[text()='下一步']"))
               )
-              password_input.send_keys("${{ secrets.GOOGLE_AUTH_PASSWORD }}")  # 新增 Secret：Google 授权密码
-              driver.find_element(By.ID, "passwordNext").click()
-              time.sleep(10)
+              next_btn.click()
+              time.sleep(8)  # 等待密码页加载
 
-              # 3. 确认授权（若首次授权，需点击"允许"）
+              # 2. 定位并输入 Google 密码
+              print("正在输入 Google 密码...")
+              password_input = WebDriverWait(driver, 40).until(
+                  EC.element_to_be_clickable((By.XPATH, "//input[@type='password']"))
+              )
+              password_input.clear()
+              password_input.send_keys("${{ secrets.GOOGLE_AUTH_PASSWORD }}")
+              # 点击密码页“下一步”
+              password_next_btn = WebDriverWait(driver, 20).until(
+                  EC.element_to_be_clickable((By.XPATH, "//span[text()='下一步']"))
+              )
+              password_next_btn.click()
+              time.sleep(12)  # 等待授权页加载（网络慢时需更长时间）
+
+              # 3. 处理授权确认（若首次授权）
+              print("正在确认授权...")
               try:
-                  allow_btn = WebDriverWait(driver, 20).until(
-                      EC.presence_of_element_located((By.XPATH, "//button[contains(text(), '允许')]"))
+                  # 定位“允许”按钮（适配多语言，用包含文本匹配）
+                  allow_btn = WebDriverWait(driver, 30).until(
+                      EC.element_to_be_clickable((By.XPATH, "//button[contains(., '允许')]"))
                   )
                   allow_btn.click()
-                  time.sleep(5)
-              except:
-                  print("无需二次授权（已授权过）")
+                  print("已点击允许授权")
+                  time.sleep(8)
+              except Exception as e:
+                  print("无需二次授权（已授权过）或未找到允许按钮，错误：", str(e))
 
-              # 4. 验证 Token 文件是否生成
-              token_check = requests.get("http://localhost:8000/get_token")
-              if token_check.status_code == 200:
+              # 4. 验证 Token 是否生成
+              print("正在验证 Token 文件...")
+              token_response = requests.get("http://localhost:8000/get_token", timeout=10)
+              if token_response.status_code == 200:
                   print("✅ Token 获取成功！")
-                  print("Token 详情：", token_check.json())
+                  print("Token 有效期至：", token_response.json().get("expires_at"))
               else:
-                  raise Exception("❌ Token 获取失败，状态码：", token_check.status_code)
+                  raise Exception(f"❌ Token 获取失败，状态码：{token_response.status_code}，响应：{token_response.text}")
 
+          except Exception as main_e:
+              print(f"授权流程出错：{str(main_e)}")
+              print("当前页面源码（用于调试）：", driver.page_source[:2000])  # 打印部分源码，帮助定位问题
+              raise  # 抛出错误，让工作流显示失败
           finally:
-              driver.quit()  # 关闭浏览器
+              driver.quit()
+              print("浏览器已关闭")
           EOF
 
-      # 7. 上传 Token 文件到 Artifacts（便于下载使用）
       - name: Upload Token File
         uses: actions/upload-artifact@v4
         with:
           name: blogger-token
-          path: blogger_token.json  # 脚本生成的 Token 文件
+          path: blogger_token.json
+          retention-days: 7  # 设定产物保留7天，避免占用空间
