@@ -80,9 +80,9 @@ jobs:
         BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
       run: |
         if [[ -n "${{ github.event.inputs.topic }}" ]]; then
-          python enhanced_blog_automation.py --topic "${{ github.event.inputs.topic }}" --labels "${{ github.event.inputs.labels }}"
+          python cn_enhanced_blog_automation.py --topic "${{ github.event.inputs.topic }}" --labels "${{ github.event.inputs.labels }}"
         else
-          python enhanced_blog_automation.py --auto
+          python cn_enhanced_blog_automation.py --auto
         fi
         
     - name: 上传日志
