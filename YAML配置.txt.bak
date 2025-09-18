@@ -1,0 +1,27 @@
+# version: '3'
+services:
+  mihomo:
+    container_name: mihomo
+    image: metacubex/mihomo
+    restart: always
+    privileged: true
+    pid: host
+    ipc: host
+    network_mode: host
+    cap_add:
+      - ALL
+    security_opt:
+      - apparmor=unconfined
+    volumes:
+      - /xxx/docker/mihomo:/root/.config/mihomo
+      - /dev/net/tun:/dev/net/tun
+  
+  metacubexd:
+    container_name: metacubexd
+    image: ghcr.io/metacubex/metacubexd
+    restart: always
+    network_mode: bridge
+    ports:
+      - '9097:80'
+    volumes:
+      - /xxx/docker/mihomo/metacubexd:/config/caddy
