@@ -251,5 +251,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-18T18:35:13.208252",
+    "title": "AI生成文章，如何才能爆火？🔥",
+    "title_hash": "2b56f5873d40f13d546395005418ef4f",
+    "topic": "怎样的ai生成文章才有人看呢",
+    "url": "http://blogger.g0f.cn/2025/09/ai.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
