@@ -1,4 +1,4 @@
-name: Enhanced Blog Automation
+name: 博客更新
 
 on:
   schedule:
