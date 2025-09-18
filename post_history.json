@@ -238,5 +238,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-18T17:47:43.085823",
+    "title": "🤯 당신도 놀랄 거예요!  AI, 이젠 정말 '인간스럽다'는 증거 5가지",
+    "title_hash": "449adf623f2a41adaedd816c9bd84361",
+    "topic": "你很不错，真的很ai",
+    "url": "http://blogger.g0f.cn/2025/09/ai-5.html",
+    "labels": [
+      "AI",
+      "블로그"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
