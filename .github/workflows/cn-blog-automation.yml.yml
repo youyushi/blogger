@@ -1,20 +1,20 @@
-name: 增强博客自动化
+name: Enhanced Blog Automation
 
 on:
   schedule:
-    # 每天下午1点 (韩国时间) - 每天只运行一次
-    - cron: '0 4 * * *'   # 下午1:00 KST = UTC 04:00
-  workflow_dispatch: # 手动运行
+    # 매일 오후 1시 (한국시간) - 하루에 한 번만 실행
+    - cron: '0 4 * * *'   # 오후 1:00 KST = UTC 04:00
+  workflow_dispatch: # 수동 실행
     inputs:
       topic:
-        description: '博客文章主题 (可选)'
+        description: 'Blog post topic (optional)'
         required: false
         type: string
       labels:
-        description: '文章标签 (逗号分隔)'
+        description: 'Post labels (comma-separated)'
         required: false
         type: string
-        default: 'AI,博客'
+        default: 'AI,블로그'
 
 permissions:
   contents: write
@@ -24,26 +24,26 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: 检出代码库
+    - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: 设置Python环境
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         
-    - name: 缓存Python包
+    - name: Cache Python packages
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         
-    - name: 安装依赖
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install google-api-python-client google-auth-oauthlib google-generativeai
         
-    - name: 创建配置文件
+    - name: Create config file
       run: |
         cat > config.ini << EOF
         [GOOGLE]
@@ -58,9 +58,9 @@ jobs:
         max_tokens = 2000
         
         [CONTENT]
-        default_labels = AI,博客,GitHub
+        default_labels = AI,블로그,GitHub
         post_format = html
-        language = zh
+        language = ko
         
         [AUTOMATION]
         topics_file = topics.json
@@ -68,11 +68,11 @@ jobs:
         max_posts_per_day = 3
         EOF
         
-    - name: 从密钥创建令牌文件
+    - name: Create token file from secrets
       run: |
         echo '${{ secrets.BLOGGER_TOKEN_JSON }}' > blogger_token.json
         
-    - name: 运行自动化博客发布
+    - name: Run automated blog posting
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
@@ -85,24 +85,24 @@ jobs:
           python cn_enhanced_blog_automation.py --auto
         fi
         
-    - name: 上传日志
+    - name: Upload logs
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: 博客自动化日志
+        name: blog-automation-logs
         path: |
           blog_automation.log
           post_history.json
         retention-days: 30
         
-    - name: 提交更新的历史记录
+    - name: Commit updated history
       if: success()
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         if [[ -f post_history.json ]]; then
           git add post_history.json
-          git diff --staged --quiet || git commit -m "更新发布历史 - $(date +'%Y-%m-%d %H:%M')"
+          git diff --staged --quiet || git commit -m "Update post history - $(date +'%Y-%m-%d %H:%M')"
           git push
         fi
 
@@ -112,14 +112,14 @@ jobs:
     if: always()
     
     steps:
-    - name: 通知成功
+    - name: Notify success
       if: needs.auto-blog-post.result == 'success'
       run: |
-        echo "✅ 博客自动化成功完成"
-        echo "请检查您的博客查看新文章!"
+        echo "✅ Blog automation completed successfully"
+        echo "Check your blog for the new post!"
         
-    - name: 通知失败
+    - name: Notify failure
       if: needs.auto-blog-post.result == 'failure'
       run: |
-        echo "❌ 博客自动化失败"
-        echo "请检查日志获取详细信息"
+        echo "❌ Blog automation failed"
+        echo "Please check the logs for details"
