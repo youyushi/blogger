@@ -277,5 +277,25 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T04:17:10.807995",
+    "title": "AI图像生成：学生实验大揭秘！✨",
+    "title_hash": "3b138a0d40fca22c0fd2b50332105adc",
+    "topic": "AI 图像生成: 学生的实验结果",
+    "url": "http://blogger.g0f.cn/2025/09/ai_86.html",
+    "labels": [
+      "AI",
+      "图像生成",
+      "Stable Diffusion",
+      "Midjourney",
+      "DALL-E 2",
+      "提示词工程",
+      "机器学习",
+      "人工智能",
+      "学生实验"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
