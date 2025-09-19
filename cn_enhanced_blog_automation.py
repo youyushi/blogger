@@ -32,7 +32,7 @@ def load_config():
         'google_client_secret': os.environ.get('GOOGLE_CLIENT_SECRET', '***'),
         'blog_id': os.environ.get('BLOGGER_BLOG_ID', '***'),
         'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***'),
-        'gemini_api_base': os.environ.get('GEMINI_API_BASE', 'https://generativelanguage.googleapis.com/v1beta')
+        'gemini_api_base': os.environ.get('GEMINI_API_BASE', 'https://generativelanguage.googleapis.com/v1')
     }
     
     # 加载令牌信息
@@ -252,7 +252,7 @@ def generate_high_quality_content(topic: str) -> Dict:
     
     try:
         # Gemini API 调用（允许更多令牌）
-        model = genai.GenerativeModel('gemini 2.5 pro')
+        model = genai.GenerativeModel('gemini-2.5-pro')
         response = model.generate_content(
             prompt,
             generation_config={
@@ -636,6 +636,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
