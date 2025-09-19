@@ -152,11 +152,11 @@ def get_quality_image_url(keyword: str) -> str:
     unsplash_collections = {
         "ai_tech": [
             "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-            "https://images.unsplash.com/photo-1686191128892-3b5fdc17b7bf", 
-            "https://images.unsplash.com/photo-1655635643532-b47e63c4a580",
-            "https://images.unsplash.com/photo-1664906225771-ad618ea1fee8",
-            "https://images.unsplash.com/photo-1675271591211-41ae13f0e71f",
-            "https://images.unsplash.com/photo-1620712943543-bcc4688e7bd0",
+            "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf", 
+            "https://images.unsplash.com/photo-1718241905696-cb34c2c07bed",
+            "https://images.unsplash.com/photo-1739805591936-39f03383c9a9",
+            "https://images.unsplash.com/photo-1710993011836-108ba89ebe51",
+            "https://images.unsplash.com/photo-1677756119517-756a188d2d94",
             "https://images.unsplash.com/photo-1535378917042-10a22c95931a",
             "https://images.unsplash.com/photo-1555255707-c07966088b7b"
         ],
@@ -174,14 +174,14 @@ def get_quality_image_url(keyword: str) -> str:
             "https://images.unsplash.com/photo-1513258496099-48168024aec0",
             "https://images.unsplash.com/photo-1501504905252-473c47e087f8",
             "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
-            "https://images.unsplash.com/photo-1517245386807-d1c09bbb0fd4",
-            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+            "https://images.unsplash.com/photo-1550592704-6c76defa9985",
+            "https://images.unsplash.com/photo-1546410531-bb4caa6b424d",
+            "https://images.unsplash.com/photo-1604933834215-2a64950311bd",
             "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
             "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8"
         ],
         "creative": [
-            "https://images.unsplash.com/photo-1626785774573-e9d366118b80",
+            "https://images.unsplash.com/photo-1560421683-6856ea585c78",
             "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
             "https://images.unsplash.com/photo-1559028012-481c04fa702d",
             "https://images.unsplash.com/photo-1626447857058-2ba6a8868cb5",
@@ -634,3 +634,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
