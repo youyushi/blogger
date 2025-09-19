@@ -297,5 +297,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T06:14:41.784232",
+    "title": "🚀 我要做AI！从入门到进阶的完整指南",
+    "title_hash": "fd94729f5b572b2a22d75c65e86ccfba",
+    "topic": "我要做ai",
+    "url": "http://blogger.g0f.cn/2025/09/ai_2.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
