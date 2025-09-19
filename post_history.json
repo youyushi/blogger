@@ -440,5 +440,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T19:04:12.695056",
+    "title": "🤖 真的很烦，不开心",
+    "title_hash": "6ee10bcc56d4218850391b9cbc61853a",
+    "topic": "真的很烦，不开心",
+    "url": "http://blogger.g0f.cn/2025/09/blog-post_49.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
