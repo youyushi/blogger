@@ -264,5 +264,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T02:17:20.376022",
+    "title": "AI全自动网站？🔥内容秘诀大公开！",
+    "title_hash": "a12c998d941d2acdcfd2a77e0a515c4c",
+    "topic": "一个完全由ai生成内容的网站，要生成什么内容才会有人看呢",
+    "url": "http://blogger.g0f.cn/2025/09/ai_19.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
