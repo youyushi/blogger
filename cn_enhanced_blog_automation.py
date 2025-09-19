@@ -369,99 +369,229 @@ def create_beautiful_html(content_data: Dict) -> str:
                 <p style="font-size: 20px; font-weight: 300; opacity: 0.95; margin: 0; color: #ffffff !important;">
                     {content_data.get('subtitle', '与AI一起的智能生活')}
                 </p>
-            </header>
+def create_beautiful_html(content_data: Dict) -> str:
+    """创建美观的HTML帖子 - 简化结构，优化移动端显示"""
+    # 安全的颜色主题（以可读性为中心）
+    themes = [
+        {"primary": "#2563eb", "secondary": "#1e40af", "accent": "#dc2626"},  # 蓝色主题
+        {"primary": "#059669", "secondary": "#047857", "accent": "#ea580c"},  # 绿色主题
+        {"primary": "#7c3aed", "secondary": "#6d28d9", "accent": "#dc2626"},  # 紫色主题
+        {"primary": "#dc2626", "secondary": "#b91c1c", "accent": "#2563eb"},  # 红色主题
+        {"primary": "#ea580c", "secondary": "#dc2626", "accent": "#059669"}   # 橙色主题
+    ]
+    theme = random.choice(themes)
+    
+    html = f"""
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
             
-            <!-- 主图片（确保显示） -->
-            <div style="margin: 40px 0; text-align: center;">
+            /* 基础重置和移动优先样式 */
+            * {{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }}
+            
+            body {{
+                font-family: 'Noto Sans SC', sans-serif;
+                line-height: 1.6;
+                color: #111827;
+                background-color: #ffffff;
+                padding: 15px;
+            }}
+            
+            .article-container {{
+                max-width: 100%;
+                margin: 0 auto;
+                background: #ffffff;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            }}
+            
+            .hero-section {{
+                background: linear-gradient(135deg, {theme['primary']} 0%, {theme['secondary']} 100%);
+                padding: 30px 20px;
+                color: #ffffff;
+                margin-bottom: 25px;
+            }}
+            
+            .hero-section h1 {{
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 10px;
+                line-height: 1.3;
+            }}
+            
+            .hero-section p {{
+                font-size: 16px;
+                opacity: 0.9;
+            }}
+            
+            .main-image {{
+                width: 100%;
+                margin: 20px 0;
+                text-align: center;
+            }}
+            
+            .main-image img {{
+                width: 100%;
+                height: auto;
+                border-radius: 12px;
+                display: block;
+            }}
+            
+            .image-caption {{
+                margin-top: 10px;
+                color: #6b7280;
+                font-size: 14px;
+                text-align: center;
+            }}
+            
+            .content-section {{
+                padding: 20px;
+                font-size: 16px;
+                line-height: 1.7;
+            }}
+            
+            .content-section p {{
+                margin-bottom: 15px;
+            }}
+            
+            .content-section h2 {{
+                font-size: 20px;
+                margin: 25px 0 15px 0;
+                color: #000000;
+            }}
+            
+            .content-section h3 {{
+                font-size: 18px;
+                margin: 20px 0 12px 0;
+                color: #000000;
+            }}
+            
+            .tags-section {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 30px 0 20px 0;
+                padding: 0 20px;
+            }}
+            
+            .tag {{
+                background: {theme['accent']}20;
+                color: {theme['accent']};
+                padding: 6px 12px;
+                border-radius: 16px;
+                font-size: 13px;
+                font-weight: 500;
+            }}
+            
+            .footer-section {{
+                background: #f8fafc;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 20px;
+                border-left: 4px solid {theme['primary']};
+            }}
+            
+            .footer-section p {{
+                color: #4b5563;
+                font-size: 15px;
+                margin: 0;
+            }}
+            
+            /* 平板和桌面适配 */
+            @media (min-width: 768px) {{
+                body {{
+                    padding: 30px;
+                }}
+                
+                .article-container {{
+                    max-width: 700px;
+                }}
+                
+                .hero-section {{
+                    padding: 40px 30px;
+                }}
+                
+                .hero-section h1 {{
+                    font-size: 32px;
+                }}
+                
+                .hero-section p {{
+                    font-size: 18px;
+                }}
+                
+                .content-section {{
+                    padding: 30px;
+                    font-size: 18px;
+                }}
+                
+                .content-section h2 {{
+                    font-size: 24px;
+                }}
+                
+                .content-section h3 {{
+                    font-size: 20px;
+                }}
+            }}
+            
+            /* 大桌面适配 */
+            @media (min-width: 1024px) {{
+                .article-container {{
+                    max-width: 900px;
+                }}
+                
+                .hero-section {{
+                    padding: 50px 40px;
+                }}
+                
+                .hero-section h1 {{
+                    font-size: 42px;
+                }}
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="article-container">
+            <!-- 英雄区域 -->
+            <div class="hero-section">
+                <h1>{content_data.get('title', 'AI博客')}</h1>
+                <p>{content_data.get('subtitle', '与AI一起的智能生活')}</p>
+            </div>
+            
+            <!-- 主图片 -->
+            <div class="main-image">
                 <img src="{content_data.get('image_url', 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop&auto=format&q=85')}" 
                      alt="{content_data.get('title', 'AI图片')}"
                      loading="lazy"
-                     onerror="this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop&auto=format&q=85'"
-                     style="width: 100%; max-width: 100%; height: auto; 
-                            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-                            display: block; margin: 0 auto;">
-                <p style="margin-top: 15px; color: #6b7280 !important; font-size: 14px;">
-                    {content_data.get('summary', '')}
-                </p>
+                     onerror="this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop&auto=format&q=85'">
+                <p class="image-caption">{content_data.get('summary', '')}</p>
             </div>
             
-            <!-- 正文内容容器 -->
-            <div style="background-color: #ffffff !important; padding: 30px; border-radius: 12px; 
-                        margin: 30px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                <div class="content-wrapper" style="font-size: 18px; line-height: 1.9; color: #111827 !important;">
-                    {content_data.get('content', '')}
-                </div>
+            <!-- 正文内容 -->
+            <div class="content-section">
+                {content_data.get('content', '')}
             </div>
             
             <!-- 标签区域 -->
-            <footer style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #e5e7eb; 
-                           background-color: #ffffff !important;">
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
-                    {"".join([f'<span style="background: {theme["accent"]}20; color: {theme["accent"]} !important; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500;">#{tag}</span>' for tag in content_data.get('tags', [])])}
-                </div>
-                
-                <div style="background: #f8fafc !important; padding: 25px; border-radius: 12px; 
-                            border-left: 4px solid {theme['primary']}; color: #1f2937 !important;">
-                    <p style="margin: 0; color: #4b5563 !important; font-size: 16px;">
-                        💡 这篇文章对您有帮助吗？如果您需要更多AI技巧和指南，
-                        请订阅并点赞！
-                    </p>
-                </div>
-            </footer>
+            <div class="tags-section">
+                {"".join([f'<span class="tag">#{tag}</span>' for tag in content_data.get('tags', [])])}
+            </div>
             
-        </article>
-        
-        <!-- 强制样式应用脚本 -->
-        <script>
-            // DOM加载后强制应用样式
-            window.onload = function() {{
-                // 强制设置所有文本元素的颜色
-                const allElements = document.querySelectorAll('*');
-                allElements.forEach(function(element) {{
-                    // 排除页眉和页脚
-                    if (!element.closest('header') && !element.classList.contains('tag')) {{
-                        element.style.setProperty('background-color', 'transparent', 'important');
-                        
-                        // 设置文本元素的颜色
-                        if (element.tagName.match(/^(P|SPAN|DIV|LI|TD|TH)$/i)) {{
-                            element.style.setProperty('color', '#111827', 'important');
-                        }}
-                        // 标题元素
-                        if (element.tagName.match(/^H[1-6]$/i)) {{
-                            element.style.setProperty('color', '#000000', 'important');
-                        }}
-                    }}
-                }});
-                
-                // 强制设置body和article的背景色
-                document.body.style.setProperty('background-color', '#ffffff', 'important');
-                document.body.style.setProperty('color', '#111827', 'important');
-                
-                const article = document.querySelector('article');
-                if (article) {{
-                    article.style.setProperty('background-color', '#ffffff', 'important');
-                    article.style.setProperty('color', '#111827', 'important');
-                }}
-                
-                // 重写Blogger特定类
-                const bloggerElements = document.querySelectorAll('.post-body, .post-content, .Blog, .blog-posts');
-                bloggerElements.forEach(function(element) {{
-                    element.style.setProperty('background-color', '#ffffff', 'important');
-                    element.style.setProperty('color', '#111827', 'important');
-                }});
-                
-                // 强制设置正文内容样式
-                const contentWrapper = document.querySelector('.content-wrapper');
-                if (contentWrapper) {{
-                    contentWrapper.style.setProperty('color', '#111827', 'important');
-                    const contentParagraphs = contentWrapper.querySelectorAll('p, span, div');
-                    contentParagraphs.forEach(function(p) {{
-                        p.style.setProperty('color', '#111827', 'important');
-                        p.style.setProperty('background-color', 'transparent', 'important');
-                    }});
-                }}
-            }};
-        </script>
+            <!-- 页脚 -->
+            <div class="footer-section">
+                <p>💡 这篇文章对您有帮助吗？如果您需要更多AI技巧和指南，请订阅并点赞！</p>
+            
+             </div>
+        </div>        
+              
     </body>
     </html>
     """
@@ -635,6 +765,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
