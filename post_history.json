@@ -323,5 +323,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T11:03:02.182444",
+    "title": "🤖 团队领导的Stable Diffusion 指南 路线图",
+    "title_hash": "bd168065267094498ab476eedd1cb20a",
+    "topic": "团队领导的Stable Diffusion 指南 路线图",
+    "url": "http://blogger.g0f.cn/2025/09/stable-diffusion.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
