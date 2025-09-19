@@ -1,43 +1,49 @@
-# 📝 블로그 자동화 시스템
+📝 博客自动化系统
 
-## ⚠️ 중요: 저장소 사용 제한사항
+⚠️ 重要：存储库使用限制
 
-**이 저장소는 오직 블로그 자동 포스팅 전용입니다.**
+此存储库仅用于博客自动发布专用。
 
-### ✅ 허용되는 파일들
-- `.github/workflows/blog-automation.yml` (블로그 자동화 워크플로우만)
-- `enhanced_blog_automation.py` (메인 블로그 생성 스크립트)
-- `post_history.json` (포스트 기록)
-- `README.md`, `requirements.txt` 등 필수 파일
-- Blogger API 관련 설정 파일
+✅ 允许的文件
 
-### ❌ 절대 금지
-- **Threads 자동화 관련 코드** (별도 저장소: `threads-auto-posting`)
-- 장어 관리 시스템 등 기타 프로젝트 코드
-- Instagram API 관련 파일
-- 관련 없는 HTML/CSS/JS 파일
+· .github/workflows/blog-automation.yml (仅博客自动化工作流)
+· enhanced_blog_automation.py (主博客生成脚本)
+· post_history.json (发布历史记录)
+· README.md、requirements.txt 等必要文件
+· Blogger API 相关配置文件
 
-### 🛡️ 보호 규칙
-1. 직접 push 금지 - PR을 통해서만 변경
-2. 모든 변경사항은 블로그 자동화 목적에만 한정
-3. 파일명에 `threads`, `instagram`, `eel`, `jangeo` 등 포함 금지
+❌ 绝对禁止
+
+· Threads 自动化相关代码 (独立存储库: threads-auto-posting)
+· 鳗鱼管理系统等其他项目代码
+· Instagram API 相关文件
+· 无关的 HTML/CSS/JS 文件
+
+🛡️ 保护规则
+
+1. 禁止直接 push - 仅允许通过 PR 进行变更
+2. 所有变更必须仅限于博客自动化目的
+3. 文件名中禁止包含 threads、instagram、eel、jangeo 等字样
 
 ---
 
-## 🤖 현재 기능
-- 매일 오후 1시(KST)에 AI가 자동으로 블로그 포스트 생성 및 발행
-- Gemini AI를 통한 고품질 콘텐츠 자동 생성
-- Unsplash를 통한 고해상도 이미지 자동 삽입
-- 가독성 최적화된 HTML 템플릿 적용
+🤖 当前功能
 
-## ✨ 주요 개선사항
-- **텍스트 가독성 개선**: 진한 텍스트 색상(#111827) 적용
-- **이미지 로딩 보장**: 직접 Unsplash URL 방식 사용
-- **블로거 플랫폼 호환성**: `!important` CSS로 스타일 강제 적용
-- **자동 히스토리 관리**: 중복 포스팅 방지 시스템
+· 每天下午 1点(KST) AI 自动生成博客文章并发布
+· 通过 Gemini AI 实现高质量内容自动生成
+· 通过 Unsplash 自动插入高分辨率图片
+· 应用针对可读性优化的 HTML 模板
 
-## 📋 워크플로우 스케줄
-- 매일 오후 1시 (KST 13:00 = UTC 04:00)
-- GitHub Actions를 통한 완전 자동화
+✨ 主要改进
 
-**다른 목적의 코드는 해당 전용 저장소를 사용하세요!**
+· 文本可读性改进: 应用深色文本颜色(#111827)
+· 确保图片加载: 使用直接 Unsplash URL 方式
+· Blogger 平台兼容性: 使用 !important CSS 强制应用样式
+· 自动历史记录管理: 重复发布防止系统
+
+📋 工作流计划
+
+· 每天下午 1点 (KST 13:00 = UTC 04:00)
+· 通过 GitHub Actions 实现完全自动化
+
+其他目的的代码请使用相应的专用存储库！
