@@ -310,5 +310,18 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-19T10:59:50.076711",
+    "title": "🤖 gemini 2.5 pro效果怎么样",
+    "title_hash": "cab25274fbf1d4e233b2e3d7f97b42d8",
+    "topic": "gemini 2.5 pro效果怎么样",
+    "url": "http://blogger.g0f.cn/2025/09/gemini-25-pro.html",
+    "labels": [
+      "AI",
+      "博客"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
