@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-适用于GitHub Actions的增强版博客自动化系统 v2.0
- 
-- 多种主题生成系统（30+个基础主题）
-- 借助Gemini AI生成高质量内容（2000-3000字符）
-- 谷歌博客（Google Blogger）API自动发布
-- 强化防重复系统
-- 自动插入Unsplash平台高质量图片
-- 美观的HTML模板（随机颜色主题）
-- 定时发布与防重复功能
-- 每日发布限制（每天10篇）
+GitHub Actions용 향상된 블로그 자동화 시스템 v2.0
+- 다양한 토픽 생성 시스템 (30+ 기본 주제)
+- Gemini AI로 고품질 콘텐츠 생성 (2000-3000자)
+- Google Blogger API 자동 포스팅
+- 중복 방지 시스템 강화
+- Unsplash 고품질 이미지 자동 삽입
+- 아름다운 HTML 템플릿 (랜덤 색상 테마)
+- 스케줄링 및 중복 방지
+- 하루 1회 포스팅 제한
 """
 
 import os
@@ -32,7 +31,6 @@ def load_config():
         'google_client_secret': os.environ.get('GOOGLE_CLIENT_SECRET', '***'),
         'blog_id': os.environ.get('BLOGGER_BLOG_ID', '***'),
         'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***')
-        #'gemini_api_base': os.environ.get('GEMINI_API_BASE', 'https://generativelanguage.googleapis.com/v1')
     }
     
     # 加载令牌信息
@@ -154,11 +152,11 @@ def get_quality_image_url(keyword: str) -> str:
     unsplash_collections = {
         "ai_tech": [
             "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-            "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf", 
-            "https://images.unsplash.com/photo-1718241905696-cb34c2c07bed",
-            "https://images.unsplash.com/photo-1739805591936-39f03383c9a9",
-            "https://images.unsplash.com/photo-1710993011836-108ba89ebe51",
-            "https://images.unsplash.com/photo-1677756119517-756a188d2d94",
+            "https://images.unsplash.com/photo-1686191128892-3b5fdc17b7bf", 
+            "https://images.unsplash.com/photo-1655635643532-b47e63c4a580",
+            "https://images.unsplash.com/photo-1664906225771-ad618ea1fee8",
+            "https://images.unsplash.com/photo-1675271591211-41ae13f0e71f",
+            "https://images.unsplash.com/photo-1620712943543-bcc4688e7bd0",
             "https://images.unsplash.com/photo-1535378917042-10a22c95931a",
             "https://images.unsplash.com/photo-1555255707-c07966088b7b"
         ],
@@ -176,14 +174,14 @@ def get_quality_image_url(keyword: str) -> str:
             "https://images.unsplash.com/photo-1513258496099-48168024aec0",
             "https://images.unsplash.com/photo-1501504905252-473c47e087f8",
             "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
-            "https://images.unsplash.com/photo-1550592704-6c76defa9985",
-            "https://images.unsplash.com/photo-1546410531-bb4caa6b424d",
-            "https://images.unsplash.com/photo-1604933834215-2a64950311bd",
+            "https://images.unsplash.com/photo-1517245386807-d1c09bbb0fd4",
+            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
             "https://images.unsplash.com/photo-1481627834876-b7833e8f5570",
             "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8"
         ],
         "creative": [
-            "https://images.unsplash.com/photo-1560421683-6856ea585c78",
+            "https://images.unsplash.com/photo-1626785774573-e9d366118b80",
             "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
             "https://images.unsplash.com/photo-1559028012-481c04fa702d",
             "https://images.unsplash.com/photo-1626447857058-2ba6a8868cb5",
@@ -252,7 +250,7 @@ def generate_high_quality_content(topic: str) -> Dict:
     
     try:
         # Gemini API 调用（允许更多令牌）
-        model = genai.GenerativeModel('gemini-2.5-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(
             prompt,
             generation_config={
@@ -634,14 +632,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-
     main()
-
-
-
-
-
-
-
-
-
