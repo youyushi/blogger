@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-GitHub Actions용 향상된 블로그 자동화 시스템 v2.0
-- 다양한 토픽 생성 시스템 (30+ 기본 주제)
-- Gemini AI로 고품질 콘텐츠 생성 (2000-3000자)
-- Google Blogger API 자동 포스팅
-- 중복 방지 시스템 강화
-- Unsplash 고품질 이미지 자동 삽입
-- 아름다운 HTML 템플릿 (랜덤 색상 테마)
-- 스케줄링 및 중복 방지
-- 하루 1회 포스팅 제한
+适用于GitHub Actions的增强版博客自动化系统 v2.0
+ 
+- 多种主题生成系统（30+个基础主题）
+- 借助Gemini AI生成高质量内容（2000-3000字符）
+- 谷歌博客（Google Blogger）API自动发布
+- 强化防重复系统
+- 自动插入Unsplash平台高质量图片
+- 美观的HTML模板（随机颜色主题）
+- 定时发布与防重复功能
+- 每日发布限制（每天1篇）
 """
 
 import os
@@ -634,4 +635,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
