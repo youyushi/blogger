@@ -31,7 +31,7 @@ def load_config():
         'google_client_id': os.environ.get('GOOGLE_CLIENT_ID', '***'),
         'google_client_secret': os.environ.get('GOOGLE_CLIENT_SECRET', '***'),
         'blog_id': os.environ.get('BLOGGER_BLOG_ID', '***'),
-        'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***')
+        'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***'),
         'gemini_api_base': os.environ.get('GEMINI_API_BASE', 'https://generativelanguage.googleapis.com/v1beta')
     }
     
@@ -636,6 +636,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
