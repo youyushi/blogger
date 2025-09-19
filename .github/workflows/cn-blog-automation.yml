@@ -78,7 +78,7 @@ jobs:
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
-        GEMINI_API_BASE: ${{ secrets.GEMINI_API_BASE }}
+      #  GEMINI_API_BASE: ${{ secrets.GEMINI_API_BASE }}
       run: |
         if [[ -n "${{ github.event.inputs.topic }}" ]]; then
           python cn_enhanced_blog_automation.py --topic "${{ github.event.inputs.topic }}" --labels "${{ github.event.inputs.labels }}"
