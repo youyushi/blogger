@@ -252,7 +252,7 @@ def generate_high_quality_content(topic: str) -> Dict:
     
     try:
         # Gemini API 调用（允许更多令牌）
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini 2.5 Pro')
         response = model.generate_content(
             prompt,
             generation_config={
@@ -636,5 +636,6 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
