@@ -11,5 +11,25 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-20T04:12:38.942137",
+    "title": "🤯 Gemini 고급 기능 완전 정복! 2025년 9월 최신 업데이트 핵심 정리",
+    "title_hash": "2d0bc737c43736ce3052dd898e92e289",
+    "topic": "[2025년 09월] Gemini 고급 기능 전문가가 알려주는 정리",
+    "url": "http://blogger.g0f.cn/2025/09/gemini-2025-9.html",
+    "labels": [
+      "Gemini",
+      "AI",
+      "Google Gemini",
+      "AI 활용",
+      "생성형 AI",
+      "프롬프트 엔지니어링",
+      "API",
+      "2025",
+      "고급 기능"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
