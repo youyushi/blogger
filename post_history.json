@@ -49,5 +49,31 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-22T04:13:50.050998",
+    "title": "🤯 연구 생산성 200% UP! AI 플러그인 추천 인터뷰: 연구원 필수템!",
+    "title_hash": "bc6100fd0392c0d3c002141260208a69",
+    "topic": "연구원을 위한 AI 플러그인 추천 인터뷰",
+    "url": "http://blogger.g0f.cn/2025/09/200-up-ai.html",
+    "labels": [
+      "AI",
+      "플러그인",
+      "연구",
+      "생산성",
+      "논문",
+      "데이터 분석",
+      "문헌 조사",
+      "QuillBot",
+      "Grammarly",
+      "Tabular",
+      "Python",
+      "TensorFlow",
+      "PyTorch",
+      "Semantic Scholar",
+      "Connected Papers"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
