@@ -524,8 +524,8 @@ def post_to_blog(config, title, content, labels=None):
         print(f'❌ 发布过程中出错: {e}')
         return None
 
-def should_post_today(history, max_posts_per_day=1):
-    """检查今天是否可以发布 - 限制每天1次"""
+def should_post_today(history, max_posts_per_day=10):
+    """检查今天是否可以发布 - 限制每天10次"""
     today = datetime.now().strftime('%Y-%m-%d')
     today_posts = []
     
@@ -633,3 +633,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
