@@ -112,5 +112,26 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-09-25T04:17:21.584443",
+    "title": "解锁AI图像生成潜能！✨深度评测及实用技巧",
+    "title_hash": "7a4ff15dbd28480c73395b8488daead9",
+    "topic": "创意 AI 图像生成 评测",
+    "url": "http://blogger.g0f.cn/2025/09/ai_25.html",
+    "labels": [
+      "AI",
+      "图像生成",
+      "Midjourney",
+      "Stable Diffusion",
+      "DALL-E 2",
+      "人工智能",
+      "艺术",
+      "创意",
+      "评测",
+      "技巧"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
