@@ -30,10 +30,12 @@ def load_config():
         'google_client_id': os.environ.get('GOOGLE_CLIENT_ID', '***'),
         'google_client_secret': os.environ.get('GOOGLE_CLIENT_SECRET', '***'),
         'blog_id': os.environ.get('BLOGGER_BLOG_ID', '***'),
-        'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***')
+        'gemini_api_key': os.environ.get('GEMINI_API_KEY', '***'),
+        'api_base_url': os.environ.get('GEMINI_API_BASE_URL', None),  # 中转API地址
+        'use_proxy_api': os.environ.get('USE_PROXY_API', 'false').lower() == 'true'  # 是否使用中转API
     }
-    
-    # 토큰 정보 로드
+
+    # 托큰 정보 로드
     try:
         with open('blogger_token.json', 'r', encoding='utf-8') as f:
             token_data = json.load(f)
@@ -41,14 +43,24 @@ def load_config():
     except:
         print("❌ blogger_token.json 로드 실패")
         return None
-    
+
     # Gemini API 설정
     if config['gemini_api_key'] and config['gemini_api_key'] != '***':
-        genai.configure(api_key=config['gemini_api_key'])
+        # 如果使用中转API，配置自定义base_url
+        if config['use_proxy_api'] and config['api_base_url']:
+            print(f"✅ 使用中转API: {config['api_base_url']}")
+            genai.configure(
+                api_key=config['gemini_api_key'],
+                transport='rest',
+                client_options={'api_endpoint': config['api_base_url']}
+            )
+        else:
+            print("✅ 使用官方Gemini API")
+            genai.configure(api_key=config['gemini_api_key'])
     else:
         print("❌ Gemini API 키가 없습니다")
         return None
-    
+
     return config
 
 def load_post_history():
@@ -250,7 +262,7 @@ def generate_high_quality_content(topic: str) -> Dict:
     
     try:
         # Gemini API 호출 (더 많은 토큰 허용)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(
             prompt,
             generation_config={
