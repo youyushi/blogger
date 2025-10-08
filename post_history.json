@@ -133,5 +133,19 @@
     ],
     "method": "github_actions_v2",
     "success": true
+  },
+  {
+    "timestamp": "2025-10-08T12:54:53.206482",
+    "title": "🤖 AI 번역 활용 - 시간 단축 비교 분석",
+    "title_hash": "244edada305fba13716c4968abb4432d",
+    "topic": "AI 번역 활용 - 시간 단축 비교 분석",
+    "url": "http://blogger.g0f.cn/2025/10/ai.html",
+    "labels": [
+      "AI",
+      "인공지능",
+      "자동화"
+    ],
+    "method": "github_actions_v2",
+    "success": true
   }
 ]
