@@ -1,0 +1,35 @@
+name: 清理缓存 + 增强博客自动化
+on:
+  workflow_dispatch:  # 支持手动触发
+  schedule:
+    - cron: '0 0 * * 1'  # 每周一自动执行（可选）
+
+jobs:
+  clean_and_run:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 清空 GitHub 缓存
+      - name: 清空 Actions 缓存
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 0
+
+      # 2. 清空项目本地缓存（以 Python 为例，可根据技术栈调整）
+      - name: 清空项目缓存
+        run: |
+          # 若使用 pip，清空缓存
+          pip cache purge
+          # 若使用 npm，清空缓存
+          # npm cache clean --force
+          # 若使用 yarn，清空缓存
+          # yarn cache clean
+
+      # 3. 手动运行“增强博客自动化”逻辑（替换为你的实际脚本）
+      - name: 手动运行博客自动化
+        run: |
+          # 示例：执行你的 Python 脚本
+          python bloggerjson.py
+          # 若为其他语言，替换为对应命令
